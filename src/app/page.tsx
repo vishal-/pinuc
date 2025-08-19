@@ -1,98 +1,75 @@
-import { FaSearch, FaHome, FaGraduationCap, FaPalette, FaSpa } from 'react-icons/fa';
+import { FaHome, FaGraduationCap, FaPalette, FaSpa } from 'react-icons/fa';
+import Header from '../components/common/Header';
+import Footer from '../components/common/Footer';
 
 export default function Home() {
   return (
     <div className="min-h-screen">
-      {/* Header */}
-      <header className="flex items-center justify-between p-4 border-b">
-        <div className="text-2xl font-bold text-blue-600">ServiceHub</div>
-        <div className="flex-1 max-w-md mx-8">
-          <div className="relative">
-            <FaSearch className="absolute left-3 top-3 text-gray-400" />
-            <input 
-              type="text" 
-              placeholder="Search services..." 
-              className="w-full pl-10 pr-4 py-2 border rounded-lg"
-            />
-          </div>
-        </div>
-        <div className="space-x-4">
-          <button className="px-4 py-2 text-blue-600 hover:bg-blue-50 rounded">Login</button>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Sign Up</button>
-        </div>
-      </header>
+      <Header />
 
       {/* Hero Banner */}
-      <section className="bg-blue-600 text-white py-20 text-center">
+      <section className="py-20 text-center text-white" style={{backgroundColor: 'var(--primary-blue)'}}>
         <h1 className="text-5xl font-bold mb-4">Find Trusted Local Services Fast</h1>
         <p className="text-xl">Connect with verified professionals in your area</p>
       </section>
 
       {/* Service Categories */}
-      <section className="py-16 px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">Popular Services</h2>
+      <section className="py-16 px-4" style={{backgroundColor: 'var(--soft-white)'}}>
+        <h2 className="text-3xl font-bold text-center mb-12" style={{color: 'var(--dark-gray)'}}>Popular Services</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-          <div className="text-center p-6 border rounded-lg hover:shadow-lg cursor-pointer">
-            <FaHome className="text-4xl text-blue-600 mx-auto mb-4" />
-            <h3 className="font-semibold">Home Repair</h3>
+          <div className="text-center p-6 border rounded-lg hover:shadow-lg cursor-pointer" style={{backgroundColor: 'var(--warm-neutral)', borderColor: 'var(--warm-neutral)'}}>
+            <FaHome className="text-4xl mx-auto mb-4" style={{color: 'var(--primary-blue)'}} />
+            <h3 className="font-semibold" style={{color: 'var(--dark-gray)'}}>Home Repair</h3>
           </div>
-          <div className="text-center p-6 border rounded-lg hover:shadow-lg cursor-pointer">
-            <FaGraduationCap className="text-4xl text-blue-600 mx-auto mb-4" />
-            <h3 className="font-semibold">Tutoring</h3>
+          <div className="text-center p-6 border rounded-lg hover:shadow-lg cursor-pointer" style={{backgroundColor: 'var(--warm-neutral)', borderColor: 'var(--warm-neutral)'}}>
+            <FaGraduationCap className="text-4xl mx-auto mb-4" style={{color: 'var(--primary-blue)'}} />
+            <h3 className="font-semibold" style={{color: 'var(--dark-gray)'}}>Tutoring</h3>
           </div>
-          <div className="text-center p-6 border rounded-lg hover:shadow-lg cursor-pointer">
-            <FaPalette className="text-4xl text-blue-600 mx-auto mb-4" />
-            <h3 className="font-semibold">Design</h3>
+          <div className="text-center p-6 border rounded-lg hover:shadow-lg cursor-pointer" style={{backgroundColor: 'var(--warm-neutral)', borderColor: 'var(--warm-neutral)'}}>
+            <FaPalette className="text-4xl mx-auto mb-4" style={{color: 'var(--primary-blue)'}} />
+            <h3 className="font-semibold" style={{color: 'var(--dark-gray)'}}>Design</h3>
           </div>
-          <div className="text-center p-6 border rounded-lg hover:shadow-lg cursor-pointer">
-            <FaSpa className="text-4xl text-blue-600 mx-auto mb-4" />
-            <h3 className="font-semibold">Wellness</h3>
+          <div className="text-center p-6 border rounded-lg hover:shadow-lg cursor-pointer" style={{backgroundColor: 'var(--warm-neutral)', borderColor: 'var(--warm-neutral)'}}>
+            <FaSpa className="text-4xl mx-auto mb-4" style={{color: 'var(--primary-blue)'}} />
+            <h3 className="font-semibold" style={{color: 'var(--dark-gray)'}}>Wellness</h3>
           </div>
         </div>
       </section>
 
       {/* How It Works */}
-      <section className="bg-gray-50 py-16 px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
+      <section className="py-16 px-4" style={{backgroundColor: 'var(--warm-neutral)'}}>
+        <h2 className="text-3xl font-bold text-center mb-12" style={{color: 'var(--dark-gray)'}}>How It Works</h2>
         <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
           <div className="text-center">
-            <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">1</div>
-            <h3 className="text-xl font-semibold mb-2">Search</h3>
-            <p className="text-gray-600">Find the perfect service provider for your needs</p>
+            <div className="w-16 h-16 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4" style={{backgroundColor: 'var(--primary-blue)'}}>1</div>
+            <h3 className="text-xl font-semibold mb-2" style={{color: 'var(--dark-gray)'}}>Search</h3>
+            <p style={{color: 'var(--medium-gray)'}}>Find the perfect service provider for your needs</p>
           </div>
           <div className="text-center">
-            <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">2</div>
-            <h3 className="text-xl font-semibold mb-2">Book</h3>
-            <p className="text-gray-600">Schedule your appointment with ease</p>
+            <div className="w-16 h-16 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4" style={{backgroundColor: 'var(--primary-blue)'}}>2</div>
+            <h3 className="text-xl font-semibold mb-2" style={{color: 'var(--dark-gray)'}}>Book</h3>
+            <p style={{color: 'var(--medium-gray)'}}>Schedule your appointment with ease</p>
           </div>
           <div className="text-center">
-            <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">3</div>
-            <h3 className="text-xl font-semibold mb-2">Pay Securely</h3>
-            <p className="text-gray-600">Complete payment safely through our platform</p>
+            <div className="w-16 h-16 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4" style={{backgroundColor: 'var(--primary-blue)'}}>3</div>
+            <h3 className="text-xl font-semibold mb-2" style={{color: 'var(--dark-gray)'}}>Pay Securely</h3>
+            <p style={{color: 'var(--medium-gray)'}}>Complete payment safely through our platform</p>
           </div>
         </div>
       </section>
 
       {/* Testimonials */}
-      <section className="py-16 px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">What Our Customers Say</h2>
+      <section className="py-16 px-4" style={{backgroundColor: 'var(--soft-white)'}}>
+        <h2 className="text-3xl font-bold text-center mb-12" style={{color: 'var(--dark-gray)'}}>What Our Customers Say</h2>
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white p-8 rounded-lg shadow-lg text-center">
-            <p className="text-lg mb-4">"Amazing service! Found a great plumber within minutes and the booking process was seamless."</p>
-            <p className="font-semibold">- Sarah Johnson</p>
+          <div className="p-8 rounded-lg shadow-lg text-center" style={{backgroundColor: 'var(--soft-white)'}}>
+            <p className="text-lg mb-4" style={{color: 'var(--dark-gray)'}}>&ldquo;Amazing service! Found a great plumber within minutes and the booking process was seamless.&rdquo;</p>
+            <p className="font-semibold" style={{color: 'var(--medium-gray)'}}>- Sarah Johnson</p>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8 px-4">
-        <div className="max-w-4xl mx-auto flex justify-center space-x-8">
-          <a href="#" className="hover:text-blue-400">About</a>
-          <a href="#" className="hover:text-blue-400">Terms</a>
-          <a href="#" className="hover:text-blue-400">Privacy</a>
-          <a href="#" className="hover:text-blue-400">Contact</a>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
