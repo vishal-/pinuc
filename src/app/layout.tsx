@@ -13,8 +13,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ServiceHub - Find Trusted Local Services Fast",
+  title: "Pinuc - Find Trusted Local Services Fast",
   description: "Connect with verified professionals in your area for home repair, tutoring, design, wellness and more.",
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
 };
 
 export default function RootLayout({
