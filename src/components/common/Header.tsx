@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Header() {
   return (
@@ -9,7 +10,7 @@ export default function Header() {
         borderColor: "var(--warm-neutral)"
       }}
     >
-      <div className="flex items-center gap-2">
+      <Link href="/" className="flex items-center gap-2 hover:opacity-80">
         <Image
           src="/pinuc.png"
           alt="Pinuc"
@@ -21,9 +22,10 @@ export default function Header() {
           className="text-xl sm:text-2xl font-bold"
           style={{ color: "var(--primary-blue)" }}
         >
-          pinuc
+          Pinuc
         </div>
-      </div>
+      </Link>
+
       <div className="flex gap-2 sm:gap-4">
         <button
           className="px-3 py-2 text-sm sm:px-4 sm:text-base rounded hover:opacity-90"

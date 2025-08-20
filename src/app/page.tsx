@@ -1,9 +1,16 @@
-import { FaHome, FaGraduationCap, FaPalette, FaSpa } from 'react-icons/fa';
+import { PrismaClient } from '@prisma/client';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import SearchSection from '../components/forms/SearchSection';
 
-export default function Home() {
+const prisma = new PrismaClient();
+
+export default async function Home() {
+  const categories = await prisma.category.findMany({
+    where: { isActive: true },
+    orderBy: { displayOrder: 'asc' },
+    take: 4
+  });
   return (
     <div className="min-h-screen">
       <Header />
@@ -20,22 +27,17 @@ export default function Home() {
       <section className="py-12 sm:py-16 px-4" style={{backgroundColor: 'var(--soft-white)'}}>
         <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12" style={{color: 'var(--dark-gray)'}}>Popular Services</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8 max-w-4xl mx-auto">
-          <div className="text-center p-4 sm:p-6 border rounded-lg hover:shadow-lg cursor-pointer" style={{backgroundColor: 'var(--warm-neutral)', borderColor: 'var(--warm-neutral)'}}>
-            <FaHome className="text-2xl sm:text-4xl mx-auto mb-2 sm:mb-4" style={{color: 'var(--primary-blue)'}} />
-            <h3 className="text-sm sm:text-base font-semibold" style={{color: 'var(--dark-gray)'}}>Home Repair</h3>
-          </div>
-          <div className="text-center p-4 sm:p-6 border rounded-lg hover:shadow-lg cursor-pointer" style={{backgroundColor: 'var(--warm-neutral)', borderColor: 'var(--warm-neutral)'}}>
-            <FaGraduationCap className="text-2xl sm:text-4xl mx-auto mb-2 sm:mb-4" style={{color: 'var(--primary-blue)'}} />
-            <h3 className="text-sm sm:text-base font-semibold" style={{color: 'var(--dark-gray)'}}>Tutoring</h3>
-          </div>
-          <div className="text-center p-4 sm:p-6 border rounded-lg hover:shadow-lg cursor-pointer" style={{backgroundColor: 'var(--warm-neutral)', borderColor: 'var(--warm-neutral)'}}>
-            <FaPalette className="text-2xl sm:text-4xl mx-auto mb-2 sm:mb-4" style={{color: 'var(--primary-blue)'}} />
-            <h3 className="text-sm sm:text-base font-semibold" style={{color: 'var(--dark-gray)'}}>Design</h3>
-          </div>
-          <div className="text-center p-4 sm:p-6 border rounded-lg hover:shadow-lg cursor-pointer" style={{backgroundColor: 'var(--warm-neutral)', borderColor: 'var(--warm-neutral)'}}>
-            <FaSpa className="text-2xl sm:text-4xl mx-auto mb-2 sm:mb-4" style={{color: 'var(--primary-blue)'}} />
-            <h3 className="text-sm sm:text-base font-semibold" style={{color: 'var(--dark-gray)'}}>Wellness</h3>
-          </div>
+          {categories.map((category) => (
+            <a 
+              key={category.id}
+              href={`/services/${category.slug}`}
+              className="text-center p-4 sm:p-6 border rounded-lg hover:shadow-lg cursor-pointer transition-shadow" 
+              style={{backgroundColor: 'var(--warm-neutral)', borderColor: 'var(--warm-neutral)'}}
+            >
+              <div className="text-2xl sm:text-4xl mx-auto mb-2 sm:mb-4">{category.iconUrl || '📋'}</div>
+              <h3 className="text-sm sm:text-base font-semibold" style={{color: 'var(--dark-gray)'}}>{category.name}</h3>
+            </a>
+          ))}
         </div>
       </section>
 
