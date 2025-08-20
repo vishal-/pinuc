@@ -113,6 +113,78 @@ async function main() {
     });
   }
 
+  // Create Health & Wellness category
+  const healthCategory = await prisma.category.upsert({
+    where: { slug: 'health-wellness' },
+    update: {},
+    create: {
+      name: 'Health & Wellness',
+      slug: 'health-wellness',
+      description: 'Professional health and wellness services for your physical and mental well-being.',
+      iconUrl: '🏥',
+      displayOrder: 4,
+      isActive: true,
+    },
+  });
+
+  const healthSubcategories = [
+    { name: 'Personal training', slug: 'personal-training' },
+    { name: 'Yoga/fitness instructors', slug: 'yoga-fitness-instructors' },
+    { name: 'Physiotherapy', slug: 'physiotherapy' },
+    { name: 'Nutrition consulting', slug: 'nutrition-consulting' },
+    { name: 'Mental health counseling (online or offline)', slug: 'mental-health-counseling' },
+  ];
+
+  for (const [index, subcategory] of healthSubcategories.entries()) {
+    await prisma.subcategory.upsert({
+      where: { categoryId_slug: { categoryId: healthCategory.id, slug: subcategory.slug } },
+      update: {},
+      create: {
+        categoryId: healthCategory.id,
+        name: subcategory.name,
+        slug: subcategory.slug,
+        displayOrder: index + 1,
+        isActive: true,
+      },
+    });
+  }
+
+  // Create Pet Care category
+  const petCategory = await prisma.category.upsert({
+    where: { slug: 'pet-care' },
+    update: {},
+    create: {
+      name: 'Pet Care',
+      slug: 'pet-care',
+      description: 'Professional pet care services for your furry friends.',
+      iconUrl: '🐶',
+      displayOrder: 5,
+      isActive: true,
+    },
+  });
+
+  const petSubcategories = [
+    { name: 'Pet grooming', slug: 'pet-grooming' },
+    { name: 'Dog walking', slug: 'dog-walking' },
+    { name: 'Pet sitting/boarding', slug: 'pet-sitting-boarding' },
+    { name: 'Veterinary consultations (in-home or virtual)', slug: 'veterinary-consultations' },
+    { name: 'Pet training', slug: 'pet-training' },
+  ];
+
+  for (const [index, subcategory] of petSubcategories.entries()) {
+    await prisma.subcategory.upsert({
+      where: { categoryId_slug: { categoryId: petCategory.id, slug: subcategory.slug } },
+      update: {},
+      create: {
+        categoryId: petCategory.id,
+        name: subcategory.name,
+        slug: subcategory.slug,
+        displayOrder: index + 1,
+        isActive: true,
+      },
+    });
+  }
+
   console.log('Seeded all categories successfully!');
 }
 
