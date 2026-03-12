@@ -6,11 +6,12 @@ import { generateCategoryMetadata } from "@/lib/seo";
 import { filterByCategory } from "@/lib/filters";
 
 interface Props {
-  params: { category: string };
+  params: Promise<{ category: string }>;
 }
 
 export async function generateMetadata({ params }: Props) {
-  const meta = generateCategoryMetadata(params.category);
+  const { category } = await params;
+  const meta = generateCategoryMetadata(category);
   return {
     title: meta.title,
     description: meta.description,
@@ -24,14 +25,15 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function CategoryPage({ params }: Props) {
-  const category = serviceCategories.find((c) => c.slug === params.category);
+export default async function CategoryPage({ params }: Props) {
+  const { category } = await params;
+  const categoryFile = serviceCategories.find((c) => c.slug === category);
 
-  if (!category) {
+  if (!categoryFile) {
     notFound();
   }
 
-  const categoryProviders = filterByCategory(providers, params.category as any);
+  const categoryProviders = filterByCategory(providers, category as never);
 
   const categoryNameMap: Record<string, string> = {
     "home-repair": "Home Repair",
@@ -45,7 +47,7 @@ export default function CategoryPage({ params }: Props) {
         {/* Header */}
         <div className="mb-12">
           <h1 className="text-4xl font-bold mb-4">
-            {categoryNameMap[params.category]}
+            {categoryNameMap[category]}
           </h1>
           <p className="text-lg text-gray-600">
             Browse all available providers in this category

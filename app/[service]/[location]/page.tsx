@@ -3,15 +3,16 @@ import { providers } from "@/data/providers";
 import { locations } from "@/data/locations";
 import { ProviderCard } from "@/components/ProviderCard";
 import { generateServiceLocationMetadata } from "@/lib/seo";
-import { filterByService, filterByLocality } from "@/lib/filters";
+import { filterByService } from "@/lib/filters";
 import { slugify } from "@/lib/slugify";
 
 interface Props {
-  params: { service: string; location: string };
+  params: Promise<{ service: string; location: string }>;
 }
 
 export async function generateMetadata({ params }: Props) {
-  const meta = generateServiceLocationMetadata(params.service, params.location);
+  const { service, location } = await params;
+  const meta = generateServiceLocationMetadata(service, location);
   return {
     title: meta.title,
     description: meta.description,
@@ -32,7 +33,7 @@ export async function generateStaticParams() {
     "event-planner"
   ];
 
-  const params: any[] = [];
+  const params: unknown[] = [];
 
   for (const service of serviceList) {
     for (const location of locations) {
@@ -46,15 +47,16 @@ export async function generateStaticParams() {
   return params;
 }
 
-export default function ServiceLocationPage({ params }: Props) {
-  const locationName = locations.find((l) => l.slug === params.location);
+export default async function ServiceLocationPage({ params }: Props) {
+  const { service, location } = await params;
+  const locationName = locations.find((l) => l.slug === location);
 
   if (!locationName) {
     notFound();
   }
 
   // Filter by service and location
-  let filtered = filterByService(providers, params.service);
+  let filtered = filterByService(providers, service);
   filtered = filtered.filter(
     (p) => slugify(p.locality) === slugify(locationName.name)
   );
@@ -72,7 +74,7 @@ export default function ServiceLocationPage({ params }: Props) {
     "event-planner": "Event Planners"
   };
 
-  const serviceName = serviceNames[params.service] || params.service;
+  const serviceName = serviceNames[service] || service;
   const locationDisplayName = locationName.name;
 
   return (

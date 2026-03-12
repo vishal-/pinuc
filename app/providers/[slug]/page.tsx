@@ -4,11 +4,12 @@ import { ProviderProfile } from "@/components/ProviderProfile";
 import { generateProviderMetadata } from "@/lib/seo";
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: Props) {
-  const provider = providers.find((p) => p.slug === params.slug);
+  const { slug } = await params;
+  const provider = providers.find((p) => p.slug === slug);
 
   if (!provider) {
     return { title: "Provider Not Found" };
@@ -29,8 +30,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function ProviderPage({ params }: Props) {
-  const provider = providers.find((p) => p.slug === params.slug);
+export default async function ProviderPage({ params }: Props) {
+  const { slug } = await params;
+  const provider = providers.find((p) => p.slug === slug);
 
   if (!provider) {
     notFound();
