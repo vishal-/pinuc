@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export default function JoinAsProviderPage() {
   const [formData, setFormData] = useState({
@@ -216,12 +217,9 @@ export default function JoinAsProviderPage() {
 
             {/* Submit Button */}
             <div className="pt-4">
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition font-semibold"
-              >
+              <Button type="submit" className="w-full py-3 text-base">
                 Submit Application
-              </button>
+              </Button>
             </div>
           </form>
 

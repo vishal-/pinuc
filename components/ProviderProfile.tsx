@@ -2,6 +2,7 @@
 
 import { Provider } from "@/data/providers";
 import { ReviewsSection } from "./ReviewsSection";
+import { Button } from "./ui/button";
 
 interface ProviderProfileProps {
   provider: Provider;
@@ -123,21 +124,22 @@ export function ProviderProfile({ provider }: ProviderProfileProps) {
       <div className="bg-white rounded-lg shadow-md p-8 mb-8">
         <h2 className="text-2xl font-bold mb-4">Get in Touch</h2>
         <div className="flex gap-4 flex-wrap">
-          <button
+          <Button
             onClick={handleCall}
-            className="flex-1 min-w-40 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition font-semibold"
+            variant="success"
+            className="flex-1 min-w-40 py-3 text-base"
           >
             📞 Call Now
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={handleMessage}
-            className="flex-1 min-w-40 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition font-semibold"
+            className="flex-1 min-w-40 py-3 text-base"
           >
             ✉️ Send Message
-          </button>
-          <button className="flex-1 min-w-40 bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition font-semibold">
+          </Button>
+          <Button variant="purple" className="flex-1 min-w-40 py-3 text-base">
             📨 Request Service
-          </button>
+          </Button>
         </div>
         <div className="mt-6 flex flex-col gap-2 text-sm">
           <p>

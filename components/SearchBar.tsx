@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "./ui/button";
 
 export function SearchBar() {
   const [query, setQuery] = useState("");
@@ -26,12 +27,12 @@ export function SearchBar() {
           onChange={(e) => setQuery(e.target.value)}
           className="w-full px-6 py-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
         />
-        <button
+        <Button
           type="submit"
-          className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 px-6 py-2"
         >
           Search
-        </button>
+        </Button>
       </div>
     </form>
   );
