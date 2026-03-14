@@ -1,0 +1,14 @@
+{
+  "generators": [
+    {
+      "name": "client",
+      "provider": "prisma-client-js"
+    }
+  ],
+  "datasources": {
+    "db": {
+      "provider": "postgresql",
+      "url": "env(DATABASE_URL)"
+    }
+  }
+}

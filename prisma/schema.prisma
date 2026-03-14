@@ -1,0 +1,322 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================================
+// ENUMS
+// ============================================================
+
+enum UserRole {
+  CONSUMER
+  PROVIDER
+  ADMIN
+}
+
+enum AccountType {
+  INDIVIDUAL
+  AGENCY
+}
+
+enum SubscriptionTier {
+  FREE
+  STANDARD
+  PRO
+  AGENCY
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  GRACE
+  INACTIVE
+}
+
+enum BillingCycle {
+  MONTHLY
+  ANNUAL
+}
+
+enum Vertical {
+  HOME
+  TUTOR
+}
+
+enum AvailabilityStatus {
+  AVAILABLE
+  BUSY
+  INACTIVE
+}
+
+enum ProviderStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+  REMOVED
+}
+
+enum VerificationStatus {
+  NOT_APPLIED
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+// ============================================================
+// 1. USERS
+//    Common identity table for ALL user types.
+// ============================================================
+
+model User {
+  id              String    @id @default(cuid())
+  firebaseUid     String    @unique
+  role            UserRole  @default(CONSUMER)
+
+  // Basic info
+  name            String
+  mobile          String?
+  email           String?
+  avatarUrl       String?
+
+  // Timestamps
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  lastLoginAt     DateTime?
+
+  // Soft delete
+  isDeleted       Boolean   @default(false)
+  deletedAt       DateTime?
+
+  // Relations
+  consumerProfile     ConsumerProfile?
+  providerProfile     ProviderProfile?
+  adminProfile        AdminProfile?
+  approvedProviders   ProviderProfile[]     @relation("ApprovedBy")
+  verifiedProviders   ProviderProfile[]     @relation("VerifiedBy")
+  verificationReviews VerificationRequest[] @relation("ReviewedBy")
+  adminCreatedAccounts AdminProfile[]       @relation("CreatedBy")
+
+  @@index([firebaseUid])
+  @@index([role])
+  @@index([email])
+  @@index([mobile])
+}
+
+// ============================================================
+// 2. CONSUMER PROFILES
+//    One row per CONSUMER user.
+// ============================================================
+
+model ConsumerProfile {
+  id                  String    @id @default(cuid())
+  userId              String    @unique
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Preferences
+  preferredLocalities String[]
+  savedProviderIds    String[]
+
+  // Timestamps
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+// ============================================================
+// 3. PROVIDER PROFILES
+//    One row per PROVIDER user (Individual or Agency).
+// ============================================================
+
+model ProviderProfile {
+  id                  String              @id @default(cuid())
+  userId              String              @unique
+  user                User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Account classification
+  accountType         AccountType         @default(INDIVIDUAL)
+  vertical            Vertical
+
+  // Public profile fields
+  displayName         String
+  slug                String              @unique
+  tagline             String?
+  bio                 String?
+
+  // Service details
+  serviceArea         String[]            @default([])
+  baseRateMin         Int?                // paise (INR × 100)
+  baseRateMax         Int?                // paise (INR × 100)
+
+  // Availability
+  availabilityStatus  AvailabilityStatus  @default(AVAILABLE)
+
+  // Admin-controlled status
+  providerStatus      ProviderStatus      @default(PENDING)
+  approvedAt          DateTime?
+  approvedBy          User?               @relation("ApprovedBy", fields: [approvedById], references: [id])
+  approvedById        String?
+
+  // Verification badge
+  verificationStatus  VerificationStatus  @default(NOT_APPLIED)
+  verifiedAt          DateTime?
+  verifiedBy          User?               @relation("VerifiedBy", fields: [verifiedById], references: [id])
+  verifiedById        String?
+
+  // Subscription
+  subscriptionTier    SubscriptionTier    @default(FREE)
+
+  // Booking fee (Standard+ only)
+  bookingFeeEnabled   Boolean             @default(false)
+  bookingFeeAmount    Int?                // 4900, 9900, or 14900 paise
+
+  // Ratings (denormalised)
+  avgRating           Decimal?            @db.Decimal(3, 2)
+  reviewCount         Int                 @default(0)
+
+  // Profile completeness
+  completionPct       Int                 @default(0)
+
+  // Agency-specific (NULL for Individual accounts)
+  agencyName          String?
+  agencyLogoUrl       String?
+  agencyDescription   String?
+
+  // Timestamps
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  // Relations
+  staff               AgencyStaff[]
+  subscription        Subscription?
+  verificationRequests VerificationRequest[]
+
+  @@index([userId])
+  @@index([slug])
+  @@index([vertical])
+  @@index([accountType])
+  @@index([providerStatus])
+  @@index([subscriptionTier])
+  @@index([availabilityStatus])
+  @@index([avgRating])
+  @@index([serviceArea])
+}
+
+// ============================================================
+// 4. AGENCY STAFF
+//    Staff members under an agency provider.
+//    NOT users — no login accounts.
+// ============================================================
+
+model AgencyStaff {
+  id                  String    @id @default(cuid())
+  providerProfileId   String
+  providerProfile     ProviderProfile @relation(fields: [providerProfileId], references: [id], onDelete: Cascade)
+
+  // Staff member details
+  name                String
+  roleTitle           String
+  photoUrl            String?
+  bio                 String?
+  displayOrder        Int       @default(0)
+
+  // Timestamps
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  @@index([providerProfileId])
+  @@index([providerProfileId, displayOrder])
+}
+
+// ============================================================
+// 5. ADMIN PROFILES
+//    One row per ADMIN user.
+//    Created manually — no self-serve.
+// ============================================================
+
+model AdminProfile {
+  id                  String    @id @default(cuid())
+  userId              String    @unique
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Admin metadata
+  displayName         String
+  isSuperAdmin        Boolean   @default(false)
+
+  // Audit
+  createdBy           User?     @relation("CreatedBy", fields: [createdById], references: [id])
+  createdById         String?
+  notes               String?
+
+  // Timestamps
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+// ============================================================
+// 6. PROVIDER VERIFICATION REQUESTS
+//    Tracks verified badge applications.
+// ============================================================
+
+model VerificationRequest {
+  id                  String              @id @default(cuid())
+  providerProfileId   String
+  providerProfile     ProviderProfile     @relation(fields: [providerProfileId], references: [id], onDelete: Cascade)
+
+  // Request state
+  status              VerificationStatus  @default(PENDING)
+  submittedAt         DateTime            @default(now())
+
+  // Admin review
+  reviewedBy          User?               @relation("ReviewedBy", fields: [reviewedById], references: [id])
+  reviewedById        String?
+  reviewedAt          DateTime?
+  rejectionReason     String?
+
+  // Timestamps
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  @@index([providerProfileId])
+  @@index([status])
+}
+
+// ============================================================
+// 7. SUBSCRIPTIONS
+//    One active subscription per provider.
+// ============================================================
+
+model Subscription {
+  id                      String              @id @default(cuid())
+  providerProfileId       String              @unique
+  providerProfile         ProviderProfile     @relation(fields: [providerProfileId], references: [id], onDelete: Cascade)
+
+  // Plan details
+  tier                    SubscriptionTier    @default(FREE)
+  billingCycle            BillingCycle?
+  status                  SubscriptionStatus  @default(ACTIVE)
+
+  // Billing period
+  currentPeriodStart      DateTime?
+  currentPeriodEnd        DateTime?
+  gracePeriodEnd          DateTime?
+
+  // Razorpay (nullable — deferred)
+  razorpaySubId           String?             @unique
+  razorpayPlanId          String?
+
+  // Timestamps
+  createdAt               DateTime            @default(now())
+  updatedAt               DateTime            @updatedAt
+
+  @@index([providerProfileId])
+  @@index([tier])
+  @@index([status])
+}
