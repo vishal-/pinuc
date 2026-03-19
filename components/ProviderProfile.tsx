@@ -3,6 +3,7 @@
 import { Provider } from "@/data/providers";
 import { ReviewsSection } from "./ReviewsSection";
 import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
 
 interface ProviderProfileProps {
   provider: Provider;
@@ -38,14 +39,14 @@ export function ProviderProfile({ provider }: ProviderProfileProps) {
               📍 {provider.locality}, {provider.location}
             </p>
             <div className="flex gap-4">
-              <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-lg text-sm">
+              <Badge variant="secondary">
                 {provider.providerType === "individual"
                   ? "Individual"
                   : "Agency"}
-              </span>
-              <span className="bg-green-100 text-green-700 px-3 py-1 rounded-lg text-sm">
+              </Badge>
+              <Badge variant="secondary">
                 {provider.experienceYears} years experience
-              </span>
+              </Badge>
             </div>
           </div>
         </div>

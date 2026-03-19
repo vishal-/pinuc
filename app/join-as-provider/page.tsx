@@ -2,6 +2,16 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
 
 export default function JoinAsProviderPage() {
   const [formData, setFormData] = useState({
@@ -59,63 +69,65 @@ export default function JoinAsProviderPage() {
             {/* Provider Type */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Provider Type
-                </label>
-                <select
-                  name="providerType"
+                <Label htmlFor="providerType">Provider Type</Label>
+                <Select
                   value={formData.providerType}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, providerType: value })
+                  }
                 >
-                  <option value="individual">Individual</option>
-                  <option value="agency">Agency</option>
-                </select>
+                  <SelectTrigger id="providerType">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="individual">Individual</SelectItem>
+                    <SelectItem value="agency">Agency</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Service Category
-                </label>
-                <select
-                  name="serviceCategory"
+                <Label htmlFor="serviceCategory">Service Category</Label>
+                <Select
                   value={formData.serviceCategory}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, serviceCategory: value })
+                  }
                 >
-                  <option value="home-repair">Home Repair</option>
-                  <option value="tutors">Tutors & Teachers</option>
-                  <option value="events">Event Services</option>
-                </select>
+                  <SelectTrigger id="serviceCategory">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="home-repair">Home Repair</SelectItem>
+                    <SelectItem value="tutors">Tutors & Teachers</SelectItem>
+                    <SelectItem value="events">Event Services</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
             {/* Name Fields */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Your Name *
-                </label>
-                <input
+                <Label htmlFor="name">Your Name *</Label>
+                <Input
+                  id="name"
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Business Name
-                </label>
-                <input
+                <Label htmlFor="businessName">Business Name</Label>
+                <Input
+                  id="businessName"
                   type="text"
                   name="businessName"
                   value={formData.businessName}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
             </div>
@@ -123,30 +135,26 @@ export default function JoinAsProviderPage() {
             {/* Contact Info */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Phone *
-                </label>
-                <input
+                <Label htmlFor="phone">Phone *</Label>
+                <Input
+                  id="phone"
                   type="tel"
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email *
-                </label>
-                <input
+                <Label htmlFor="email">Email *</Label>
+                <Input
+                  id="email"
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
             </div>
@@ -154,64 +162,56 @@ export default function JoinAsProviderPage() {
             {/* Services and Experience */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Services Offered *
-                </label>
-                <input
+                <Label htmlFor="servicesOffered">Services Offered *</Label>
+                <Input
+                  id="servicesOffered"
                   type="text"
                   name="servicesOffered"
                   value={formData.servicesOffered}
                   onChange={handleChange}
                   placeholder="e.g., Installation, Repair, Consultation"
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Years of Experience *
-                </label>
-                <input
+                <Label htmlFor="yearsOfExperience">Years of Experience *</Label>
+                <Input
+                  id="yearsOfExperience"
                   type="number"
                   name="yearsOfExperience"
                   value={formData.yearsOfExperience}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
             </div>
 
             {/* Location */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Service Location *
-              </label>
-              <input
+              <Label htmlFor="location">Service Location *</Label>
+              <Input
+                id="location"
                 type="text"
                 name="location"
                 value={formData.location}
                 onChange={handleChange}
                 placeholder="e.g., Dwarka, Delhi"
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
             {/* Description */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Description *
-              </label>
-              <textarea
+              <Label htmlFor="description">Description *</Label>
+              <Textarea
+                id="description"
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
                 required
                 rows={5}
                 placeholder="Tell us about your services, experience, and what makes you unique..."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
               />
             </div>
 

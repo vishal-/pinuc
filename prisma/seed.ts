@@ -95,7 +95,7 @@ async function main() {
         },
     });
 
-    await prisma.providerProfile.create({
+    const agencyProfile = await prisma.providerProfile.create({
         data: {
             userId: agencyUser.id,
             vertical: "HOME",

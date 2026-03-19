@@ -2,6 +2,7 @@ import Link from "next/link";
 import { SearchBar } from "@/components/SearchBar";
 import { ServiceCategoryCard } from "@/components/ServiceCategoryCard";
 import { ProviderCard } from "@/components/ProviderCard";
+import { Card } from "@/components/ui/card";
 import { services, serviceCategories } from "@/data/services";
 import { locations } from "@/data/locations";
 import { providers } from "@/data/providers";
@@ -69,15 +70,13 @@ export default function Home() {
         <h2 className="text-3xl font-bold mb-8">Popular Locations</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           {locations.map((location) => (
-            <Link
-              key={location.id}
-              href={`/electricians/${location.slug}`}
-              className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition text-center"
-            >
-              <h3 className="font-semibold text-lg mb-2">{location.name}</h3>
-              <p className="text-sm text-gray-600">
-                {location.providerCount} providers
-              </p>
+            <Link key={location.id} href={`/electricians/${location.slug}`}>
+              <Card className="p-6 hover:shadow-lg transition text-center cursor-pointer h-full">
+                <h3 className="font-semibold text-lg mb-2">{location.name}</h3>
+                <p className="text-sm text-gray-600">
+                  {location.providerCount} providers
+                </p>
+              </Card>
             </Link>
           ))}
         </div>
@@ -90,14 +89,12 @@ export default function Home() {
           <p className="text-gray-600 mb-8">Explore all available services</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {services.map((service) => (
-              <Link
-                key={service.id}
-                href={`/services/${service.category}`}
-                className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition"
-              >
-                <div className="text-3xl mb-3">{service.icon}</div>
-                <h3 className="text-lg font-semibold mb-2">{service.name}</h3>
-                <p className="text-gray-600 text-sm">{service.description}</p>
+              <Link key={service.id} href={`/services/${service.category}`}>
+                <Card className="p-6 hover:shadow-lg transition cursor-pointer h-full">
+                  <div className="text-3xl mb-3">{service.icon}</div>
+                  <h3 className="text-lg font-semibold mb-2">{service.name}</h3>
+                  <p className="text-gray-600 text-sm">{service.description}</p>
+                </Card>
               </Link>
             ))}
           </div>
