@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Provider } from "@/data/providers";
+import { Badge } from "./ui/badge";
+import { Card } from "./ui/card";
 
 interface ProviderCardProps {
   provider: Provider;
@@ -8,7 +10,7 @@ interface ProviderCardProps {
 export function ProviderCard({ provider }: ProviderCardProps) {
   return (
     <Link href={`/providers/${provider.slug}`}>
-      <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition cursor-pointer">
+      <Card className="overflow-hidden hover:shadow-lg transition cursor-pointer h-full">
         {/* Placeholder for provider image */}
         <div className="w-full h-40 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-3xl font-bold">
           {provider.name.charAt(0)}
@@ -31,9 +33,7 @@ export function ProviderCard({ provider }: ProviderCardProps) {
 
           <div className="flex justify-between items-center text-sm mb-2">
             <span className="text-gray-600">{provider.locality}</span>
-            <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">
-              {provider.experienceYears}y exp
-            </span>
+            <Badge variant="secondary">{provider.experienceYears}y exp</Badge>
           </div>
 
           <p className="text-gray-700 text-sm line-clamp-2 mb-3">
@@ -43,16 +43,13 @@ export function ProviderCard({ provider }: ProviderCardProps) {
           <div className="flex gap-2">
             {provider.pricing &&
               provider.pricing.slice(0, 2).map((p) => (
-                <span
-                  key={p.service}
-                  className="text-xs bg-gray-100 px-2 py-1 rounded"
-                >
+                <Badge key={p.service} variant="outline">
                   ${p.price}
-                </span>
+                </Badge>
               ))}
           </div>
         </div>
-      </div>
+      </Card>
     </Link>
   );
 }

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
 export function SearchBar() {
   const [query, setQuery] = useState("");
@@ -19,19 +21,19 @@ export function SearchBar() {
   return (
     <form onSubmit={handleSearch} className="w-full max-w-2xl">
       <div className="relative">
-        <input
+        <Input
           type="text"
           placeholder="Search services, providers, or locations..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full px-6 py-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
+          className="px-6 py-4 h-12"
         />
-        <button
+        <Button
           type="submit"
-          className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 px-6 py-2"
         >
           Search
-        </button>
+        </Button>
       </div>
     </form>
   );
